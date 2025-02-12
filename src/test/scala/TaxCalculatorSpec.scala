@@ -33,17 +33,57 @@ class TaxCalculatorSpec extends AnyWordSpec {
       }
 
       "the income is above the higher rate limit" in {
-        val result: Double = taxCalculator.calculateTax(200000)
+        val result: Double = taxCalculator.calculateTax(345617.54)
 
-        val expectedResult: Double = 76203
+        val expectedResult: Double = 141730.89
+
+        result shouldBe expectedResult
+      }
+    }
+
+    "return 0" when {
+      "the income is a negative number" in {
+        val result: Double = taxCalculator.calculateTax(-12339)
+
+        val expectedResult: Double = 0
+
+        result shouldBe expectedResult
+      }
+    }
+  }
+
+  "TaxCalculator.isHigherRateTaxpayer" should {
+    "return false" when {
+      "the income is below the higher rate limit" in {
+        val result: Boolean = taxCalculator.isHigherRateTaxpayer(50270)
+
+        val expectedResult: Boolean = false
 
         result shouldBe expectedResult
       }
 
       "the income is a negative number" in {
-        val result: Double = taxCalculator.calculateTax(-12339)
+        val result: Boolean = taxCalculator.isHigherRateTaxpayer(-13012)
 
-        val expectedResult: Double = 0
+        val expectedResult: Boolean = false
+
+        result shouldBe expectedResult
+      }
+    }
+
+    "return true" when {
+      "the income is withing the higher rate limit" in {
+        val result: Boolean = taxCalculator.isHigherRateTaxpayer(125140)
+
+        val expectedResult: Boolean = true
+
+        result shouldBe expectedResult
+      }
+
+      "the income is above the higher rate limit" in {
+        val result: Boolean = taxCalculator.isHigherRateTaxpayer(125141)
+
+        val expectedResult: Boolean = true
 
         result shouldBe expectedResult
       }
