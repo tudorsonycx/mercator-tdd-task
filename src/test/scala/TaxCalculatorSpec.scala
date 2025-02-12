@@ -89,4 +89,54 @@ class TaxCalculatorSpec extends AnyWordSpec {
       }
     }
   }
+
+  "TaxCalculator.formattedCurrentTaxAllowance" should {
+    "return the personal allowance" when {
+      "the income is below the personal allowance limit" in {
+        val result: String = taxCalculator.formattedCurrentTaxAllowance(12570)
+
+        val expectedResult: String = f"£${taxCalculator.personalAllowance}%,d"
+
+        result shouldBe expectedResult
+      }
+
+      "the income is a negative number" in {
+        val result: String = taxCalculator.formattedCurrentTaxAllowance(-498112)
+
+        val expectedResult: String = f"£${taxCalculator.personalAllowance}%,d"
+
+        result shouldBe expectedResult
+      }
+    }
+
+    "return the basic rate limit" when {
+      "the income is below the basic rate limit" in {
+        val result: String = taxCalculator.formattedCurrentTaxAllowance(50270)
+
+        val expectedResult: String = f"£${taxCalculator.basicRateLimit}%,d"
+
+        result shouldBe expectedResult
+      }
+    }
+
+    "return the higher rate limit" when {
+      "the income is below the higher rate limit" in {
+        val result: String = taxCalculator.formattedCurrentTaxAllowance(125140)
+
+        val expectedResult: String = f"£${taxCalculator.higherRateLimit}%,d"
+
+        result shouldBe expectedResult
+      }
+    }
+
+    "return No limit" when {
+      "the income is above the higher rate limit" in {
+        val result: String = taxCalculator.formattedCurrentTaxAllowance(231512)
+
+        val expectedResult: String = "No limit"
+
+        result shouldBe expectedResult
+      }
+    }
+  }
 }
