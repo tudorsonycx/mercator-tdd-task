@@ -11,7 +11,41 @@ class TaxCalculatorSpec extends AnyWordSpec {
       "the income is below the personal tax limit" in {
         val result: Double = taxCalculator.calculateTax(5000)
 
-        assert(result == 0)
+        val expectedResult: Double = 0
+
+        result shouldBe expectedResult
+      }
+
+      "the income is below the basic rate limit" in {
+        val result: Double = taxCalculator.calculateTax(50270)
+
+        val expectedResult: Double = 7540
+
+        result shouldBe expectedResult
+      }
+
+      "the income is below the higher rate limit and below 100000" in {
+        val result: Double = taxCalculator.calculateTax(100000)
+
+        val expectedResult: Double = 27432
+
+        result shouldBe expectedResult
+      }
+
+      "the income is above the higher rate limit" in {
+        val result: Double = taxCalculator.calculateTax(200000)
+
+        val expectedResult: Double = 76203
+
+        result shouldBe expectedResult
+      }
+
+      "the income is a negative number" in {
+        val result: Double = taxCalculator.calculateTax(-12339)
+
+        val expectedResult: Double = 0
+
+        result shouldBe expectedResult
       }
     }
   }
