@@ -31,6 +31,13 @@ class TaxCalculator {
     f"$tax%.2f".toDouble
   }
 
+  def calculateCapitalGainTaxOnShares(sharesCapitalGains: Double, income: Double): Double = {
+    val sharesRate = if (isHigherRateTaxpayer(income + sharesCapitalGains)) 0.2 else 0.1
+    val capitalGainsAllowance: Double = 3000
+
+    Math.max(0, sharesCapitalGains - capitalGainsAllowance) * sharesRate
+  }
+
   // A method which can tell you if someone is a higher rate taxpayer
   def isHigherRateTaxpayer(income: Double): Boolean = {
     income > 50270

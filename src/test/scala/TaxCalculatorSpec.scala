@@ -139,4 +139,42 @@ class TaxCalculatorSpec extends AnyWordSpec {
       }
     }
   }
+
+  "TaxCalculator.calculateCapitalGainTaxOnShares" should {
+    "return the cgt on shares" when {
+      "the total income is below basic rate limit" in {
+        val result: Double = taxCalculator.calculateCapitalGainTaxOnShares(20000, 30000)
+
+        val expectedResult: Double =  1700
+
+        result shouldBe expectedResult
+      }
+
+      "the total income is above basic rate limit" in {
+        val result: Double = taxCalculator.calculateCapitalGainTaxOnShares(30000, 30000)
+
+        val expectedResult: Double = 5400
+
+        result shouldBe expectedResult
+      }
+    }
+
+    "return 0" when {
+      "the shares capital gain is less than capital gains allowance" in {
+        val result: Double = taxCalculator.calculateCapitalGainTaxOnShares(2000, 120000)
+
+        val expectedResult: Double = 0
+
+        result shouldBe expectedResult
+      }
+
+      "the shares capital gain is negative" in {
+        val result: Double = taxCalculator.calculateCapitalGainTaxOnShares(-2312.12, 120000)
+
+        val expectedResult: Double = 0
+
+        result shouldBe expectedResult
+      }
+    }
+  }
 }
